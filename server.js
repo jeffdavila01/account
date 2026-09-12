@@ -2671,6 +2671,22 @@ app.listen(PORT, async () => {
 
     await testDatabaseConnection();
 
+    const [dbInfo] = await db.execute(`
+    SELECT
+        DATABASE() AS db_name,
+        @@hostname AS db_host
+`);
+
+    console.log(
+        "APP DATABASE:",
+        dbInfo[0].db_name
+    );
+
+    console.log(
+        "APP DATABASE HOST:",
+        dbInfo[0].db_host
+    );
+
     if (resendApiKey) {
         console.log(
             "✅ Resend email API is configured."
