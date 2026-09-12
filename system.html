@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account System</title>
+
+    <link rel="stylesheet" href="system.css">
+    <script src="system.js" defer></script>
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-layout">
+
+        <!-- =====================================
+             LEFT SIDE
+        ====================================== -->
+
+        <section class="auth-hero">
+
+            <div class="auth-brand">
+
+                <div class="auth-logo">
+                    A
+                </div>
+
+                <div>
+                    <h2>Account</h2>
+                    <span>Management System</span>
+                </div>
+
+            </div>
+
+
+            <div class="hero-content">
+
+                <p class="hero-label">
+                    SECURE ACCOUNT CENTER
+                </p>
+
+                <h1>
+                    Manage your account
+                    <span>with confidence.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Create your account, securely sign in,
+                    manage your profile, and keep your
+                    information protected.
+                </p>
+
+
+                <div class="feature-list">
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>
+                                Secure Login
+                            </strong>
+
+                            <span>
+                                Password protected access
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>
+                                Email Verification
+                            </strong>
+
+                            <span>
+                                Verify new user accounts
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>
+                                Password Recovery
+                            </strong>
+
+                            <span>
+                                Reset forgotten passwords
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <p class="hero-footer">
+                Account Management System
+            </p>
+
+        </section>
+
+
+        <!-- =====================================
+             RIGHT SIDE
+        ====================================== -->
+
+        <section class="auth-content">
+
+            <div class="auth-container">
+
+                <div class="auth-heading">
+
+                    <p class="auth-small-title">
+                        ACCOUNT CENTER
+                    </p>
+
+                    <h2>
+                        Welcome
+                    </h2>
+
+                    <p>
+                        Login to your account or create
+                        a new one.
+                    </p>
+
+                </div>
+
+
+                <!-- =====================================
+                     LOGIN
+                ====================================== -->
+
+                <section class="auth-card login-card" id="loginSection">
+
+                    <div class="auth-card-heading">
+
+                        <div class="auth-card-icon">
+                            ↪
+                        </div>
+
+                        <div>
+                            <span>
+                                WELCOME BACK
+                            </span>
+
+                            <h3>
+                                Sign In
+                            </h3>
+                        </div>
+
+                    </div>
+
+
+                    <form id="loginForm">
+
+                        <div class="auth-form-group">
+
+                            <label for="loginUsername">
+                                Username
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    👤
+                                </span>
+
+                                <input type="text" id="loginUsername" placeholder="Enter username"
+                                    autocomplete="username" required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="auth-form-group">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🔒
+                                </span>
+
+                                <input type="password" id="loginPassword" placeholder="Enter password"
+                                    autocomplete="current-password" required>
+
+                                <button type="button" class="password-toggle" data-target="loginPassword"
+                                    aria-label="Show password">
+                                    👁
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="auth-primary-btn">
+                            Sign In
+                        </button>
+
+
+                        <p id="loginMessage" class="auth-message"></p>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     CREATE ACCOUNT
+                ====================================== -->
+
+                <section class="auth-card" id="registerSection">
+
+                    <div class="auth-card-heading">
+
+                        <div class="auth-card-icon">
+                            +
+                        </div>
+
+                        <div>
+                            <span>
+                                NEW ACCOUNT
+                            </span>
+
+                            <h3>
+                                Create Account
+                            </h3>
+                        </div>
+
+                    </div>
+
+
+                    <form id="registerForm">
+
+                        <div class="auth-form-group">
+
+                            <label for="registerUsername">
+                                Username
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    👤
+                                </span>
+
+                                <input type="text" id="registerUsername" placeholder="Choose a username"
+                                    autocomplete="username" required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="auth-form-group">
+
+                            <label for="registerEmail">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ✉
+                                </span>
+
+                                <input type="email" id="registerEmail" placeholder="you@example.com"
+                                    autocomplete="email" required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="auth-form-group">
+
+                            <label for="registerPassword">
+                                Password
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🔒
+                                </span>
+
+                                <input type="password" id="registerPassword" placeholder="Minimum 6 characters"
+                                    autocomplete="new-password" minlength="6" required>
+
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="auth-primary-btn">
+                            Create Account
+                        </button>
+
+
+                        <p id="registerMessage" class="auth-message"></p>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     ACCOUNT HELP
+                ====================================== -->
+
+                <section class="auth-help">
+
+                    <div class="auth-help-heading">
+
+                        <div>
+                            <span class="auth-small-title">
+                                NEED HELP?
+                            </span>
+
+                            <h3>
+                                Account Recovery
+                            </h3>
+                        </div>
+
+                    </div>
+
+
+                    <!-- FORGOT PASSWORD -->
+
+                    <details class="help-item">
+
+                        <summary>
+                            <span>
+                                🔑 Forgot Password
+                            </span>
+
+                            <span>
+                                +
+                            </span>
+                        </summary>
+
+
+                        <div class="help-content">
+
+                            <p>
+                                Enter your email and we'll
+                                send you a password reset link.
+                            </p>
+
+
+                            <form id="forgotPasswordForm">
+
+                                <div class="auth-form-group">
+
+                                    <label for="forgotEmail">
+                                        Email Address
+                                    </label>
+
+                                    <input type="email" id="forgotEmail" placeholder="you@example.com" required>
+
+                                </div>
+
+
+                                <button type="submit" class="auth-secondary-btn">
+                                    Send Reset Link
+                                </button>
+
+
+                                <p id="forgotMessage" class="auth-message"></p>
+
+                            </form>
+
+                        </div>
+
+                    </details>
+
+
+                    <!-- RESEND VERIFICATION -->
+
+                    <details class="help-item">
+
+                        <summary>
+
+                            <span>
+                                ✉ Resend Verification
+                            </span>
+
+                            <span>
+                                +
+                            </span>
+
+                        </summary>
+
+
+                        <div class="help-content">
+
+                            <p>
+                                Didn't receive your verification
+                                email? Request another one.
+                            </p>
+
+
+                            <form id="resendVerificationForm">
+
+                                <div class="auth-form-group">
+
+                                    <label for="resendEmail">
+                                        Email Address
+                                    </label>
+
+                                    <input type="email" id="resendEmail" placeholder="you@example.com" required>
+
+                                </div>
+
+
+                                <button type="submit" class="auth-secondary-btn">
+                                    Resend Verification Email
+                                </button>
+
+
+                                <p id="resendVerificationMessage" class="auth-message"></p>
+
+                            </form>
+
+                        </div>
+
+                    </details>
+
+                </section>
+
+
+                <!-- =====================================
+                     RESET PASSWORD
+                     Keep your existing JS visibility logic
+                ====================================== -->
+
+                <section class="auth-card reset-card" id="resetPasswordSection">
+
+                    <div class="auth-card-heading">
+
+                        <div class="auth-card-icon">
+                            🔐
+                        </div>
+
+                        <div>
+                            <span>
+                                PASSWORD RECOVERY
+                            </span>
+
+                            <h3>
+                                Reset Password
+                            </h3>
+                        </div>
+
+                    </div>
+
+
+                    <form id="resetPasswordForm">
+
+                        <div class="auth-form-group">
+
+                            <label for="resetNewPassword">
+                                New Password
+                            </label>
+
+                            <input type="password" id="resetNewPassword" placeholder="New password" minlength="6"
+                                required>
+
+                        </div>
+
+
+                        <div class="auth-form-group">
+
+                            <label for="resetConfirmPassword">
+                                Confirm Password
+                            </label>
+
+                            <input type="password" id="resetConfirmPassword" placeholder="Confirm new password"
+                                minlength="6" required>
+
+                        </div>
+
+
+                        <button type="submit" class="auth-primary-btn">
+                            Reset Password
+                        </button>
+
+
+                        <p id="resetMessage" class="auth-message"></p>
+
+                    </form>
+
+                </section>
+
+
+                <footer class="auth-footer">
+
+                    <span>
+                        🔒
+                    </span>
+
+                    Your information is securely protected.
+
+                </footer>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
