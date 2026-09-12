@@ -2,7 +2,7 @@ const express = require("express");
 const mysql = require("mysql2/promise");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const crypto = require("crypto");
 const path = require("path");
 require("dotenv").config();
@@ -154,148 +154,83 @@ async function testDatabaseConnection() {
 
 
 // ========================================
-// EMAIL / NODEMAILER
+// EMAIL / RESEND
 // ========================================
 
-const emailUser =
-    cleanText(
-        process.env.EMAIL_USER
-    );
+const resendApiKey =
+    cleanText(process.env.RESEND_API_KEY);
 
+const emailFrom =
+    cleanText(process.env.EMAIL_FROM) ||
+    "Account System <onboarding@resend.dev>";
 
-// Removes spaces from Gmail App Password
-const emailPassword =
-    String(
-        process.env.EMAIL_PASSWORD ||
-        ""
-    ).replace(/\s+/g, "");
-
-
-const transporter =
-    nodemailer.createTransport({
-
-        service: "gmail",
-
-        auth: {
-            user: emailUser,
-            pass: emailPassword
-        }
-    });
-
-
-async function verifyEmailTransport() {
-
-    if (
-        !emailUser ||
-        !emailPassword
-    ) {
-
-        console.error(
-            "❌ EMAIL_USER or EMAIL_PASSWORD is missing from .env"
-        );
-
-        return;
-    }
-
-
-    try {
-
-        await transporter.verify();
-
-
-        console.log(
-            "✅ Gmail is ready to send email."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "❌ Gmail connection failed:"
-        );
-
-        console.error(
-            error.message
-        );
-
-
-        if (error.code) {
-
-            console.error(
-                "Code:",
-                error.code
-            );
-        }
-
-
-        console.error(
-            "Use a Google App Password in EMAIL_PASSWORD, not your normal Gmail password."
-        );
-    }
-}
+const resend =
+    new Resend(resendApiKey);
 
 
 // ========================================
 // SEND VERIFICATION EMAIL
 // ========================================
 
-async function sendVerificationEmail(
-    email,
-    token
-) {
+async function sendVerificationEmail(email, token) {
 
     const verificationLink =
         `${BASE_URL}/api/verify-email?token=${encodeURIComponent(token)}`;
 
+    const { data, error } =
+        await resend.emails.send({
+            from: emailFrom,
+            to: [email],
+            subject: "Verify Your Account",
+            html: `
+                <h2>Verify Your Email</h2>
 
-    return transporter.sendMail({
+                <p>
+                    Thank you for creating an account.
+                </p>
 
-        from:
-            `"Account System" <${emailUser}>`,
+                <p>
+                    Click the button below to verify
+                    your email address.
+                </p>
 
-        to: email,
+                <p>
+                    <a
+                        href="${verificationLink}"
+                        style="
+                            display:inline-block;
+                            padding:12px 20px;
+                            background:#222;
+                            color:#fff;
+                            text-decoration:none;
+                            border-radius:6px;
+                        "
+                    >
+                        Verify Email
+                    </a>
+                </p>
 
-        subject:
-            "Verify Your Account",
+                <p>
+                    This verification link expires in 30 minutes.
+                </p>
 
-        html: `
-            <h2>Verify Your Email</h2>
+                <p>
+                    If you did not create this account,
+                    you can ignore this email.
+                </p>
+            `
+        });
 
-            <p>
-                Thank you for creating an account.
-            </p>
+    if (error) {
+        throw new Error(
+            error.message ||
+            "Could not send verification email."
+        );
+    }
 
-            <p>
-                Click the button below to verify
-                your email address.
-            </p>
-
-            <p>
-                <a
-                    href="${verificationLink}"
-                    style="
-                        display:inline-block;
-                        padding:12px 20px;
-                        background:#222;
-                        color:#fff;
-                        text-decoration:none;
-                        border-radius:6px;
-                    "
-                >
-                    Verify Email
-                </a>
-            </p>
-
-            <p>
-                This verification link expires
-                in 30 minutes.
-            </p>
-
-            <p>
-                If you did not create this account,
-                you can ignore this email.
-            </p>
-        `
-    });
+    return {
+        messageId: data?.id
+    };
 }
 
 
@@ -303,60 +238,60 @@ async function sendVerificationEmail(
 // SEND PASSWORD RESET EMAIL
 // ========================================
 
-async function sendPasswordResetEmail(
-    email,
-    token
-) {
+async function sendPasswordResetEmail(email, token) {
 
     const resetLink =
         `${BASE_URL}/system.html?reset_token=${encodeURIComponent(token)}`;
 
+    const { data, error } =
+        await resend.emails.send({
+            from: emailFrom,
+            to: [email],
+            subject: "Reset Your Password",
+            html: `
+                <h2>Password Reset</h2>
 
-    return transporter.sendMail({
+                <p>
+                    You requested to reset your password.
+                </p>
 
-        from:
-            `"Account System" <${emailUser}>`,
+                <p>
+                    <a
+                        href="${resetLink}"
+                        style="
+                            display:inline-block;
+                            padding:12px 20px;
+                            background:#222;
+                            color:#fff;
+                            text-decoration:none;
+                            border-radius:6px;
+                        "
+                    >
+                        Reset Password
+                    </a>
+                </p>
 
-        to: email,
+                <p>
+                    This link expires in 15 minutes.
+                </p>
 
-        subject:
-            "Reset Your Password",
+                <p>
+                    If you did not request this,
+                    you can ignore this email.
+                </p>
+            `
+        });
 
-        html: `
-            <h2>Password Reset</h2>
+    if (error) {
+        throw new Error(
+            error.message ||
+            "Could not send password reset email."
+        );
+    }
 
-            <p>
-                You requested to reset
-                your password.
-            </p>
-
-            <p>
-                <a
-                    href="${resetLink}"
-                    style="
-                        display:inline-block;
-                        padding:12px 20px;
-                        background:#222;
-                        color:#fff;
-                        text-decoration:none;
-                        border-radius:6px;
-                    "
-                >
-                    Reset Password
-                </a>
-            </p>
-
-            <p>
-                This link expires
-                in 15 minutes.
-            </p>
-
-            <p>
-                If you did not request this,
-                you can ignore this email.
-            </p>
-        `
-    });
+    return {
+        messageId: data?.id
+    };
 }
 
 
@@ -2721,18 +2656,21 @@ app.get(
 // START SERVER
 // ========================================
 
-app.listen(
-    PORT,
-    async () => {
+app.listen(PORT, async () => {
 
+    console.log(
+        `✅ Server running at ${BASE_URL}`
+    );
+
+    await testDatabaseConnection();
+
+    if (resendApiKey) {
         console.log(
-            `✅ Server running at ${BASE_URL}`
+            "✅ Resend email API is configured."
         );
-
-
-        await testDatabaseConnection();
-
-
-        await verifyEmailTransport();
+    } else {
+        console.error(
+            "❌ RESEND_API_KEY is missing."
+        );
     }
-);
+});
