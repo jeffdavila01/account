@@ -1,0 +1,2721 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="/system.css">
+</head>
+
+<body class="admin-page">
+
+    <div class="admin-layout">
+
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-brand">
+
+                <div class="admin-brand-icon">
+                    A
+                </div>
+
+                <div>
+                    <h2>Account</h2>
+                    <span>Admin Center</span>
+                </div>
+
+            </div>
+
+
+            <nav class="admin-nav">
+
+                <a href="/admin" class="admin-nav-link active">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+
+
+                <a href="#users" class="admin-nav-link">
+                    <span>👥</span>
+                    Users
+                </a>
+
+                <a href="#activityLogs" class="admin-nav-link">
+                    <span>📋</span>
+                    Activity Logs
+                </a>
+
+
+                <a href="/dashboard" class="admin-nav-link">
+                    <span>👤</span>
+                    My Account
+                </a>
+
+            </nav>
+
+
+            <div class="admin-sidebar-bottom">
+
+                <button type="button" id="adminLogoutBtn" class="admin-logout-btn">
+                    ↪ Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================
+             MAIN
+        ====================================== -->
+
+        <main class="admin-main">
+
+            <!-- TOP BAR -->
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <p class="admin-label">
+                        ADMINISTRATION
+                    </p>
+
+                    <h1>
+                        Admin Dashboard
+                    </h1>
+
+                    <p class="admin-subtitle">
+                        Manage accounts and system users.
+                    </p>
+
+                </div>
+
+
+                <div class="admin-top-actions">
+
+                    <button type="button" id="exportUsersBtn" class="admin-export-btn">
+                        ↓ Export CSV
+                    </button>
+
+                    <button type="button" id="refreshUsersBtn" class="admin-refresh-btn">
+                        ↻ Refresh
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 STATISTICS
+            ====================================== -->
+
+            <section class="admin-stats">
+
+                <article class="admin-stat-card">
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                    <div>
+                        <span>
+                            Total Users
+                        </span>
+
+                        <strong id="totalUsers">
+                            0
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <article class="admin-stat-card">
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <span>
+                            Verified
+                        </span>
+
+                        <strong id="verifiedUsers">
+                            0
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <article class="admin-stat-card">
+
+                    <div class="stat-icon">
+                        ⚙
+                    </div>
+
+                    <div>
+                        <span>
+                            Administrators
+                        </span>
+
+                        <strong id="adminUsers">
+                            0
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <article class="admin-stat-card">
+
+                    <div class="stat-icon">
+                        ◉
+                    </div>
+
+                    <div>
+                        <span>
+                            Regular Users
+                        </span>
+
+                        <strong id="regularUsers">
+                            0
+                        </strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+            <!-- =====================================
+     USERS
+====================================== -->
+
+<section class="admin-panel" id="users">
+
+    <div class="admin-panel-header">
+
+        <div>
+
+            <p class="admin-label">
+                USER MANAGEMENT
+            </p>
+
+            <h2>
+                Registered Users
+            </h2>
+
+            <p class="activity-description">
+                Manage registered user accounts.
+            </p>
+
+        </div>
+
+
+        <div class="admin-tools">
+
+            <select
+                id="userFilter"
+                class="admin-filter"
+            >
+
+                <option value="all">
+                    All Users
+                </option>
+
+                <option value="admin">
+                    Admins
+                </option>
+
+                <option value="user">
+                    Regular Users
+                </option>
+
+                <option value="verified">
+                    Verified
+                </option>
+
+                <option value="unverified">
+                    Unverified
+                </option>
+
+            </select>
+
+
+            <div class="admin-search">
+
+                <span>
+                    🔎
+                </span>
+
+                <input
+                    type="search"
+                    id="userSearch"
+                    placeholder="Search users..."
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p
+        id="adminMessage"
+        class="admin-message"
+    ></p>
+
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+
+                <tr>
+
+                    <th
+                        class="sortable"
+                        data-sort="id"
+                    >
+                        ID
+                        <span class="sort-icon">
+                            ↕
+                        </span>
+                    </th>
+
+
+                    <th
+                        class="sortable"
+                        data-sort="username"
+                    >
+                        User
+                        <span class="sort-icon">
+                            ↕
+                        </span>
+                    </th>
+
+
+                    <th
+                        class="sortable"
+                        data-sort="email"
+                    >
+                        Email
+                        <span class="sort-icon">
+                            ↕
+                        </span>
+                    </th>
+
+
+                    <th
+                        class="sortable"
+                        data-sort="is_verified"
+                    >
+                        Status
+                        <span class="sort-icon">
+                            ↕
+                        </span>
+                    </th>
+
+
+                    <th
+                        class="sortable"
+                        data-sort="role"
+                    >
+                        Role
+                        <span class="sort-icon">
+                            ↕
+                        </span>
+                    </th>
+
+
+                    <th
+                        class="sortable"
+                        data-sort="created_at"
+                    >
+                        Joined
+                        <span class="sort-icon">
+                            ↕
+                        </span>
+                    </th>
+
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="usersTable">
+
+                <tr>
+
+                    <td colspan="7">
+                        Loading users...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- USERS PAGINATION -->
+
+    <div class="pagination">
+
+        <p id="paginationInfo">
+            Showing 0–0 of 0 users
+        </p>
+
+
+        <div class="pagination-buttons">
+
+            <button
+                type="button"
+                id="previousPageBtn"
+            >
+                ← Previous
+            </button>
+
+
+            <span id="pageNumber">
+                Page 1
+            </span>
+
+
+            <button
+                type="button"
+                id="nextPageBtn"
+            >
+                Next →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================
+     ACTIVITY LOGS
+====================================== -->
+
+<section
+    class="admin-panel activity-panel"
+    id="activityLogs"
+>
+
+    <div class="admin-panel-header">
+
+        <div>
+
+            <p class="admin-label">
+                SECURITY & AUDIT
+            </p>
+
+            <h2>
+                Activity Logs
+            </h2>
+
+            <p class="activity-description">
+                Recent actions performed by administrators.
+            </p>
+
+        </div>
+
+
+        <div class="activity-tools">
+
+            <select
+                id="activityFilter"
+                class="admin-filter"
+            >
+
+                <option value="all">
+                    All Activities
+                </option>
+
+                <option value="ROLE_CHANGED">
+                    Role Changes
+                </option>
+
+                <option value="USER_DELETED">
+                    User Deletions
+                </option>
+
+            </select>
+
+
+            <button
+                type="button"
+                id="refreshLogsBtn"
+                class="admin-refresh-btn"
+            >
+                ↻ Refresh Logs
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <p
+        id="activityMessage"
+        class="admin-message"
+    ></p>
+
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Administrator</th>
+                    <th>Action</th>
+                    <th>Target User</th>
+                    <th>Details</th>
+                    <th>Date / Time</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody id="activityLogsTable">
+
+                <tr>
+
+                    <td colspan="6">
+                        Loading activity logs...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ACTIVITY PAGINATION -->
+
+    <div class="activity-pagination">
+
+        <p id="activityPaginationInfo">
+            Showing 0–0 of 0 logs
+        </p>
+
+
+        <div class="pagination-buttons">
+
+            <button
+                type="button"
+                id="activityPreviousBtn"
+            >
+                ← Previous
+            </button>
+
+
+            <span id="activityPageNumber">
+                Page 1
+            </span>
+
+
+            <button
+                type="button"
+                id="activityNextBtn"
+            >
+                Next →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+    </main>
+    <!-- =====================================
+     USER DETAILS MODAL
+====================================== -->
+
+    <div class="user-modal-overlay" id="userModal" hidden>
+
+        <div class="user-modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
+
+            <div class="user-modal-header">
+
+                <div>
+                    <p class="admin-label">
+                        ACCOUNT DETAILS
+                    </p>
+
+                    <h2 id="userModalTitle">
+                        User Information
+                    </h2>
+                </div>
+
+                <button type="button" class="modal-close-btn" id="closeUserModal" aria-label="Close user details">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-user-profile">
+
+                <div class="modal-avatar" id="modalAvatar">
+                    U
+                </div>
+
+                <div>
+                    <h3 id="modalUsername">
+                        Username
+                    </h3>
+
+                    <p id="modalEmail">
+                        email@example.com
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="modal-details-grid">
+
+                <div class="modal-detail">
+
+                    <span>
+                        User ID
+                    </span>
+
+                    <strong id="modalUserId">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        Role
+                    </span>
+
+                    <strong id="modalRole">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        Email Status
+                    </span>
+
+                    <strong id="modalVerified">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        Account Created
+                    </span>
+
+                    <strong id="modalCreated">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button" class="modal-done-btn" id="modalDoneBtn">
+                    Done
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+   
+
+    </div>
+
+
+    <script>
+
+
+
+        const userSearch =
+            document.querySelector(
+                "#userSearch"
+            );
+
+        const userFilter =
+            document.querySelector(
+                "#userFilter"
+            );
+
+
+
+        const userModal =
+            document.querySelector("#userModal");
+
+        const closeUserModal =
+            document.querySelector("#closeUserModal");
+
+        const modalDoneBtn =
+            document.querySelector("#modalDoneBtn");
+
+        const modalAvatar =
+            document.querySelector("#modalAvatar");
+
+        const modalUsername =
+            document.querySelector("#modalUsername");
+
+        const modalEmail =
+            document.querySelector("#modalEmail");
+
+        const modalUserId =
+            document.querySelector("#modalUserId");
+
+        const modalRole =
+            document.querySelector("#modalRole");
+
+        const modalVerified =
+            document.querySelector("#modalVerified");
+
+        const modalCreated =
+            document.querySelector("#modalCreated");
+
+        const usersTable =
+            document.querySelector(
+                "#usersTable"
+            );
+
+        const adminMessage =
+            document.querySelector(
+                "#adminMessage"
+            );
+
+        const activityLogsTable =
+            document.querySelector(
+                "#activityLogsTable"
+            );
+
+        const activityMessage =
+            document.querySelector(
+                "#activityMessage"
+            );
+
+        const refreshLogsBtn =
+            document.querySelector(
+                "#refreshLogsBtn"
+            );
+        const activityFilter =
+            document.querySelector(
+                "#activityFilter"
+            );
+
+        const activityPreviousBtn =
+            document.querySelector(
+                "#activityPreviousBtn"
+            );
+
+        const activityNextBtn =
+            document.querySelector(
+                "#activityNextBtn"
+            );
+
+        const activityPageNumber =
+            document.querySelector(
+                "#activityPageNumber"
+            );
+
+        const activityPaginationInfo =
+            document.querySelector(
+                "#activityPaginationInfo"
+            );
+
+        const exportUsersBtn =
+            document.querySelector(
+                "#exportUsersBtn"
+            );
+
+        const refreshUsersBtn =
+            document.querySelector(
+                "#refreshUsersBtn"
+            );
+
+        const adminLogoutBtn =
+            document.querySelector(
+                "#adminLogoutBtn"
+            );
+
+        const totalUsers =
+            document.querySelector(
+                "#totalUsers"
+            );
+
+        const verifiedUsers =
+            document.querySelector(
+                "#verifiedUsers"
+            );
+
+        const adminUsers =
+            document.querySelector(
+                "#adminUsers"
+            );
+
+        const regularUsers =
+            document.querySelector(
+                "#regularUsers"
+            );
+
+        let activeFilter = "all";
+
+        let allActivityLogs = [];
+
+        let filteredActivityLogs = [];
+
+        let activityCurrentPage = 1;
+
+        const activityLogsPerPage = 10;
+
+        let allUsers = [];
+
+        let filteredUsers = [];
+
+        let currentPage = 1;
+
+        const usersPerPage = 10;
+
+        let sortColumn = "id";
+
+        let sortDirection = "asc";
+
+        userFilter.addEventListener(
+            "change",
+            () => {
+
+                activeFilter =
+                    userFilter.value;
+
+                applyFilters();
+            }
+        );
+
+
+        function applyFilters() {
+
+            const search =
+                userSearch.value
+                    .trim()
+                    .toLowerCase();
+
+
+            filteredUsers =
+                allUsers.filter(user => {
+
+                    const matchesSearch =
+                        String(user.username)
+                            .toLowerCase()
+                            .includes(search)
+
+                        ||
+
+                        String(user.email)
+                            .toLowerCase()
+                            .includes(search)
+
+                        ||
+
+                        String(user.role)
+                            .toLowerCase()
+                            .includes(search);
+
+
+                    let matchesFilter = true;
+
+
+                    if (activeFilter === "admin") {
+
+                        matchesFilter =
+                            user.role === "admin";
+                    }
+
+
+                    else if (activeFilter === "user") {
+
+                        matchesFilter =
+                            user.role === "user";
+                    }
+
+
+                    else if (
+                        activeFilter === "verified"
+                    ) {
+
+                        matchesFilter =
+                            Boolean(
+                                user.is_verified
+                            );
+                    }
+
+
+                    else if (
+                        activeFilter === "unverified"
+                    ) {
+
+                        matchesFilter =
+                            !Boolean(
+                                user.is_verified
+                            );
+                    }
+
+
+                    return (
+                        matchesSearch &&
+                        matchesFilter
+                    );
+                });
+
+
+            currentPage = 1;
+
+            displayUsers();
+        }
+
+
+        const previousPageBtn =
+            document.querySelector(
+                "#previousPageBtn"
+            );
+
+        const nextPageBtn =
+            document.querySelector(
+                "#nextPageBtn"
+            );
+
+        const pageNumber =
+            document.querySelector(
+                "#pageNumber"
+            );
+
+        const paginationInfo =
+            document.querySelector(
+                "#paginationInfo"
+            );
+
+        function updateSortIcons() {
+
+            sortableHeaders.forEach(
+                header => {
+
+                    const icon =
+                        header.querySelector(
+                            ".sort-icon"
+                        );
+
+
+                    if (!icon) {
+                        return;
+                    }
+
+
+                    if (
+                        header.dataset.sort ===
+                        sortColumn
+                    ) {
+
+                        icon.textContent =
+                            sortDirection === "asc"
+                                ? "↑"
+                                : "↓";
+
+                    } else {
+
+                        icon.textContent =
+                            "↕";
+                    }
+                }
+            );
+        }
+
+        // ========================================
+        // TABLE SORTING
+        // ========================================
+
+        const sortableHeaders =
+            document.querySelectorAll(
+                ".sortable"
+            );
+
+
+        sortableHeaders.forEach(
+            header => {
+
+                header.addEventListener(
+                    "click",
+                    () => {
+
+                        const column =
+                            header.dataset.sort;
+
+
+                        if (
+                            sortColumn ===
+                            column
+                        ) {
+
+                            sortDirection =
+                                sortDirection ===
+                                    "asc"
+                                    ? "desc"
+                                    : "asc";
+
+                        } else {
+
+                            sortColumn =
+                                column;
+
+                            sortDirection =
+                                "asc";
+                        }
+
+
+                        currentPage = 1;
+
+
+                        updateSortIcons();
+
+                        displayUsers();
+                    }
+                );
+            }
+        );
+
+
+        // ========================================
+        // LOAD USERS
+        // ========================================
+
+        async function loadUsers() {
+
+            adminMessage.textContent =
+                "Loading users...";
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/admin/users"
+                    );
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    adminMessage.textContent =
+                        "❌ " + data.message;
+
+                    return;
+                }
+
+
+                allUsers = data;
+
+                filteredUsers =
+                    [...allUsers];
+
+                currentPage = 1;
+
+                updateStatistics();
+
+                applyFilters();
+
+                adminMessage.textContent =
+                    `✅ ${allUsers.length} user(s) loaded.`;
+
+            } catch (error) {
+
+                console.error(
+                    "Load users error:",
+                    error
+                );
+
+                adminMessage.textContent =
+                    "❌ Could not load users.";
+            }
+        }
+
+
+        // ========================================
+        // STATISTICS
+        // ========================================
+
+        function updateStatistics() {
+
+            const verified =
+                allUsers.filter(
+                    user =>
+                        Boolean(
+                            user.is_verified
+                        )
+                ).length;
+
+
+            const admins =
+                allUsers.filter(
+                    user =>
+                        user.role === "admin"
+                ).length;
+
+
+            totalUsers.textContent =
+                allUsers.length;
+
+
+            verifiedUsers.textContent =
+                verified;
+
+
+            adminUsers.textContent =
+                admins;
+
+
+            regularUsers.textContent =
+                allUsers.length - admins;
+        }
+
+        // ========================================
+        // SORT USERS
+        // ========================================
+
+        function sortUsers(users) {
+
+            return [...users].sort(
+                (a, b) => {
+
+                    let valueA =
+                        a[sortColumn];
+
+                    let valueB =
+                        b[sortColumn];
+
+
+                    // ID
+                    if (sortColumn === "id") {
+
+                        valueA =
+                            Number(valueA);
+
+                        valueB =
+                            Number(valueB);
+                    }
+
+
+                    // VERIFIED STATUS
+                    else if (
+                        sortColumn ===
+                        "is_verified"
+                    ) {
+
+                        valueA =
+                            Number(
+                                Boolean(valueA)
+                            );
+
+                        valueB =
+                            Number(
+                                Boolean(valueB)
+                            );
+                    }
+
+
+                    // CREATED DATE
+                    else if (
+                        sortColumn ===
+                        "created_at"
+                    ) {
+
+                        valueA =
+                            new Date(
+                                valueA
+                            ).getTime();
+
+                        valueB =
+                            new Date(
+                                valueB
+                            ).getTime();
+                    }
+
+
+                    // TEXT
+                    else {
+
+                        valueA =
+                            String(
+                                valueA || ""
+                            )
+                                .toLowerCase();
+
+                        valueB =
+                            String(
+                                valueB || ""
+                            )
+                                .toLowerCase();
+                    }
+
+
+                    if (valueA < valueB) {
+
+                        return sortDirection === "asc"
+                            ? -1
+                            : 1;
+                    }
+
+
+                    if (valueA > valueB) {
+
+                        return sortDirection === "asc"
+                            ? 1
+                            : -1;
+                    }
+
+
+                    return 0;
+                }
+            );
+        }
+        // ========================================
+        // DISPLAY USERS
+        // ========================================
+
+        function displayUsers() {
+
+            usersTable.replaceChildren();
+
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        filteredUsers.length /
+                        usersPerPage
+                    )
+                );
+
+
+            if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+
+            const sortedUsers =
+                sortUsers(
+                    filteredUsers
+                );
+
+
+            const startIndex =
+                (currentPage - 1) *
+                usersPerPage;
+
+
+            const endIndex =
+                startIndex +
+                usersPerPage;
+
+
+            const usersToShow =
+                sortedUsers.slice(
+                    startIndex,
+                    endIndex
+                );
+
+
+            if (usersToShow.length === 0) {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+                const cell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                cell.colSpan = 7;
+
+                cell.textContent =
+                    "No users found.";
+
+                cell.className =
+                    "empty-table";
+
+
+                row.appendChild(cell);
+
+                usersTable.appendChild(row);
+
+                updatePagination();
+
+                return;
+            }
+
+
+            usersToShow.forEach(user => {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                // ID
+                const idCell =
+                    document.createElement(
+                        "td"
+                    );
+
+                idCell.textContent =
+                    user.id;
+
+
+                // USER
+                const userCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                const userBox =
+                    document.createElement(
+                        "div"
+                    );
+
+                userBox.className =
+                    "admin-user-box";
+
+
+                const avatar =
+                    document.createElement(
+                        "div"
+                    );
+
+                avatar.className =
+                    "table-avatar";
+
+                avatar.textContent =
+                    createInitials(
+                        user.username
+                    );
+
+
+                const username =
+                    document.createElement(
+                        "strong"
+                    );
+
+                username.textContent =
+                    user.username;
+
+
+                userBox.append(
+                    avatar,
+                    username
+                );
+
+                userCell.appendChild(
+                    userBox
+                );
+
+
+                // EMAIL
+                const emailCell =
+                    document.createElement(
+                        "td"
+                    );
+
+                emailCell.textContent =
+                    user.email;
+
+
+                // STATUS
+                const statusCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                const statusBadge =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                if (user.is_verified) {
+
+                    statusBadge.className =
+                        "status-badge verified";
+
+                    statusBadge.textContent =
+                        "Verified";
+
+                } else {
+
+                    statusBadge.className =
+                        "status-badge unverified";
+
+                    statusBadge.textContent =
+                        "Unverified";
+                }
+
+
+                statusCell.appendChild(
+                    statusBadge
+                );
+
+
+                // ROLE
+                const roleCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                const roleSelect =
+                    document.createElement(
+                        "select"
+                    );
+
+                roleSelect.className =
+                    "admin-role-select";
+
+                roleSelect.dataset.userId =
+                    user.id;
+
+
+                const userOption =
+                    document.createElement(
+                        "option"
+                    );
+
+                userOption.value =
+                    "user";
+
+                userOption.textContent =
+                    "User";
+
+
+                const adminOption =
+                    document.createElement(
+                        "option"
+                    );
+
+                adminOption.value =
+                    "admin";
+
+                adminOption.textContent =
+                    "Admin";
+
+
+                roleSelect.append(
+                    userOption,
+                    adminOption
+                );
+
+
+                roleSelect.value =
+                    user.role;
+
+                if (
+                    user.id === 2 &&
+                    user.username === "jeffdavila"
+                ) {
+                    roleSelect.disabled = true;
+
+                    roleSelect.title =
+                        "You cannot change your own admin role.";
+                }
+
+
+                roleSelect.addEventListener(
+                    "change",
+                    () => {
+
+                        updateUserRole(
+                            user.id,
+                            roleSelect.value
+                        );
+                    }
+                );
+
+
+                roleCell.appendChild(
+                    roleSelect
+                );
+
+
+                // DATE
+                const dateCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                if (user.created_at) {
+
+                    const date =
+                        new Date(
+                            user.created_at
+                        );
+
+                    dateCell.textContent =
+                        date.toLocaleDateString();
+
+                } else {
+
+                    dateCell.textContent =
+                        "-";
+                }
+
+
+                // ACTIONS
+                const actionCell =
+                    document.createElement(
+                        "td"
+                    );
+
+                actionCell.className =
+                    "admin-actions";
+
+
+                // VIEW
+                const viewBtn =
+                    document.createElement(
+                        "button"
+                    );
+
+                viewBtn.type =
+                    "button";
+
+                viewBtn.className =
+                    "admin-view-btn";
+
+                viewBtn.textContent =
+                    "View";
+
+
+                viewBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        openUserModal(
+                            user.id
+                        );
+                    }
+                );
+
+
+                // DELETE
+                const deleteBtn =
+                    document.createElement(
+                        "button"
+                    );
+
+                deleteBtn.type =
+                    "button";
+
+                deleteBtn.className =
+                    "admin-delete-btn";
+
+                deleteBtn.textContent =
+                    "Delete";
+
+                if (
+                    user.id === 2 &&
+                    user.username === "jeffdavila"
+                ) {
+                    deleteBtn.disabled = true;
+
+                    deleteBtn.title =
+                        "You cannot delete your own admin account.";
+                }
+
+
+                deleteBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteUser(
+                            user.id,
+                            user.username
+                        );
+                    }
+                );
+
+
+                actionCell.append(
+                    viewBtn,
+                    deleteBtn
+                );
+
+
+                row.append(
+                    idCell,
+                    userCell,
+                    emailCell,
+                    statusCell,
+                    roleCell,
+                    dateCell,
+                    actionCell
+                );
+
+
+                usersTable.appendChild(
+                    row
+                );
+            });
+
+
+            updatePagination();
+        }
+
+        // ========================================
+        // UPDATE PAGINATION
+        // ========================================
+
+        function updatePagination() {
+
+            const totalUsersCount =
+                filteredUsers.length;
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        totalUsersCount /
+                        usersPerPage
+                    )
+                );
+
+
+            const start =
+                totalUsersCount === 0
+                    ? 0
+                    : (
+                        (currentPage - 1) *
+                        usersPerPage
+                    ) + 1;
+
+
+            const end =
+                Math.min(
+                    currentPage *
+                    usersPerPage,
+                    totalUsersCount
+                );
+
+
+            paginationInfo.textContent =
+                `Showing ${start}–${end} of ${totalUsersCount} users`;
+
+
+            pageNumber.textContent =
+                `Page ${currentPage} of ${totalPages}`;
+
+
+            previousPageBtn.disabled =
+                currentPage <= 1;
+
+
+            nextPageBtn.disabled =
+                currentPage >= totalPages ||
+                totalUsersCount === 0;
+        }
+        // ========================================
+        // CREATE INITIALS
+        // ========================================
+
+        function createInitials(name) {
+
+            const words =
+                String(name || "")
+                    .trim()
+                    .split(/\s+/);
+
+
+            if (
+                words.length > 1
+            ) {
+
+                return (
+                    words[0][0] +
+                    words[
+                    words.length - 1
+                    ][0]
+                ).toUpperCase();
+            }
+
+
+            return String(
+                words[0] || "U"
+            )
+                .substring(0, 2)
+                .toUpperCase();
+        }
+
+        // ========================================
+        // USER DETAILS MODAL
+        // ========================================
+
+        function openUserModal(userId) {
+
+            const user =
+                allUsers.find(
+                    item =>
+                        Number(item.id) ===
+                        Number(userId)
+                );
+
+
+            if (!user) {
+
+                adminMessage.textContent =
+                    "❌ User not found.";
+
+                return;
+            }
+
+
+            modalAvatar.textContent =
+                createInitials(
+                    user.username
+                );
+
+
+            modalUsername.textContent =
+                user.username;
+
+
+            modalEmail.textContent =
+                user.email;
+
+
+            modalUserId.textContent =
+                user.id;
+
+
+            modalRole.textContent =
+                user.role === "admin"
+                    ? "Administrator"
+                    : "User";
+
+
+            modalVerified.textContent =
+                user.is_verified
+                    ? "✅ Verified"
+                    : "⚠ Unverified";
+
+
+            if (user.created_at) {
+
+                const created =
+                    new Date(
+                        user.created_at
+                    );
+
+
+                modalCreated.textContent =
+                    created.toLocaleString();
+
+            } else {
+
+                modalCreated.textContent =
+                    "Not available";
+            }
+
+
+            userModal.hidden = false;
+
+            document.body.classList.add(
+                "modal-open"
+            );
+        }
+
+
+        function hideUserModal() {
+
+            userModal.hidden = true;
+
+            document.body.classList.remove(
+                "modal-open"
+            );
+        }
+
+
+        // ========================================
+        // CHANGE ROLE
+        // ========================================
+
+        async function updateUserRole(
+            userId,
+            role
+        ) {
+
+            adminMessage.textContent =
+                "Updating role...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/admin/users/${userId}/role`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    role
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    adminMessage.textContent =
+                        "❌ " + data.message;
+
+                    await loadUsers();
+
+                    return;
+                }
+
+
+                adminMessage.textContent =
+                    "✅ " + data.message;
+
+
+                await loadUsers();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Role update error:",
+                    error
+                );
+
+
+                adminMessage.textContent =
+                    "❌ Could not update role.";
+            }
+        }
+
+
+        // ========================================
+        // DELETE USER
+        // ========================================
+
+        async function deleteUser(
+            userId,
+            username
+        ) {
+
+            const confirmed =
+                confirm(
+                    `Delete account "${username}"?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            adminMessage.textContent =
+                "Deleting user...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/admin/users/${userId}`,
+                        {
+                            method:
+                                "DELETE"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    adminMessage.textContent =
+                        "❌ " + data.message;
+
+                    return;
+                }
+
+
+                adminMessage.textContent =
+                    "✅ " + data.message;
+
+
+                await loadUsers();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Delete user error:",
+                    error
+                );
+
+
+                adminMessage.textContent =
+                    "❌ Could not delete user.";
+            }
+        }
+
+
+
+
+        // ========================================
+        // PAGINATION BUTTONS
+        // ========================================
+
+        previousPageBtn.addEventListener(
+            "click",
+            () => {
+
+                if (currentPage > 1) {
+
+                    currentPage--;
+
+                    displayUsers();
+                }
+            }
+        );
+
+
+        nextPageBtn.addEventListener(
+            "click",
+            () => {
+
+                const totalPages =
+                    Math.ceil(
+                        filteredUsers.length /
+                        usersPerPage
+                    );
+
+
+                if (currentPage < totalPages) {
+
+                    currentPage++;
+
+                    displayUsers();
+                }
+            }
+        );
+
+        // ========================================
+        // EXPORT USERS TO CSV
+        // ========================================
+
+        function exportUsersToCSV() {
+
+            if (filteredUsers.length === 0) {
+
+                adminMessage.textContent =
+                    "❌ No users to export.";
+
+                return;
+            }
+
+
+            const usersToExport =
+                sortUsers(
+                    filteredUsers
+                );
+
+
+            const rows = [
+
+                [
+                    "ID",
+                    "Username",
+                    "Email",
+                    "Status",
+                    "Role",
+                    "Created"
+                ]
+
+            ];
+
+
+            usersToExport.forEach(
+                user => {
+
+                    const createdDate =
+                        user.created_at
+                            ? new Date(
+                                user.created_at
+                            ).toLocaleString()
+                            : "";
+
+
+                    rows.push([
+                        user.id,
+                        user.username,
+                        user.email,
+                        user.is_verified
+                            ? "Verified"
+                            : "Unverified",
+                        user.role,
+                        createdDate
+                    ]);
+                }
+            );
+
+
+            const csvContent =
+                rows
+                    .map(row =>
+                        row
+                            .map(value => {
+
+                                const text =
+                                    String(
+                                        value ?? ""
+                                    )
+                                        .replace(
+                                            /"/g,
+                                            '""'
+                                        );
+
+                                return `"${text}"`;
+                            })
+                            .join(",")
+                    )
+                    .join("\n");
+
+
+            const blob =
+                new Blob(
+                    [
+                        "\uFEFF" +
+                        csvContent
+                    ],
+                    {
+                        type:
+                            "text/csv;charset=utf-8;"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            const today =
+                new Date()
+                    .toISOString()
+                    .slice(0, 10);
+
+
+            link.href = url;
+
+            link.download =
+                `users-${today}.csv`;
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+            link.remove();
+
+
+            URL.revokeObjectURL(
+                url
+            );
+
+
+            adminMessage.textContent =
+                `✅ ${usersToExport.length} user(s) exported.`;
+        }
+
+
+        // ========================================
+        // EXPORT BUTTON
+        // ========================================
+
+        if (exportUsersBtn) {
+
+            exportUsersBtn.addEventListener(
+                "click",
+                exportUsersToCSV
+            );
+        }
+
+        // ========================================
+        // LOAD ACTIVITY LOGS
+        // ========================================
+
+        async function loadActivityLogs() {
+
+            activityMessage.textContent =
+                "Loading activity logs...";
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/admin/activity-logs"
+                    );
+
+                const logs =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    activityMessage.textContent =
+                        "❌ " + logs.message;
+
+                    return;
+                }
+
+
+                allActivityLogs =
+                    logs;
+
+                activityCurrentPage = 1;
+
+                applyActivityFilter();
+
+
+                activityMessage.textContent =
+                    `✅ ${logs.length} activity log(s) loaded.`;
+
+            } catch (error) {
+
+                console.error(
+                    "Load activity logs error:",
+                    error
+                );
+
+                activityMessage.textContent =
+                    "❌ Could not load activity logs.";
+            }
+        }
+
+        // ========================================
+        // APPLY ACTIVITY FILTER
+        // ========================================
+
+        function applyActivityFilter() {
+
+            const filterValue =
+                activityFilter
+                    ? activityFilter.value
+                    : "all";
+
+
+            if (filterValue === "all") {
+
+                filteredActivityLogs =
+                    [...allActivityLogs];
+
+            } else {
+
+                filteredActivityLogs =
+                    allActivityLogs.filter(
+                        log =>
+                            log.action ===
+                            filterValue
+                    );
+            }
+
+
+            activityCurrentPage = 1;
+
+            displayActivityLogs();
+        }
+
+
+        // ========================================
+        // DISPLAY ACTIVITY LOGS
+        // ========================================
+
+        function displayActivityLogs() {
+
+            activityLogsTable.replaceChildren();
+
+
+            const totalLogs =
+                filteredActivityLogs.length;
+
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        totalLogs /
+                        activityLogsPerPage
+                    )
+                );
+
+
+            if (
+                activityCurrentPage >
+                totalPages
+            ) {
+
+                activityCurrentPage =
+                    totalPages;
+            }
+
+
+            const startIndex =
+                (
+                    activityCurrentPage - 1
+                ) *
+                activityLogsPerPage;
+
+
+            const endIndex =
+                startIndex +
+                activityLogsPerPage;
+
+
+            const logsToShow =
+                filteredActivityLogs.slice(
+                    startIndex,
+                    endIndex
+                );
+
+
+            if (
+                logsToShow.length === 0
+            ) {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+                const cell =
+                    document.createElement(
+                        "td"
+                    );
+
+                cell.colSpan = 6;
+
+                cell.className =
+                    "empty-table";
+
+                cell.textContent =
+                    "No activity logs found.";
+
+
+                row.appendChild(
+                    cell
+                );
+
+                activityLogsTable.appendChild(
+                    row
+                );
+
+                updateActivityPagination();
+
+                return;
+            }
+
+
+            logsToShow.forEach(
+                log => {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const idCell =
+                        document.createElement(
+                            "td"
+                        );
+
+                    idCell.textContent =
+                        log.id;
+
+
+                    const adminCell =
+                        document.createElement(
+                            "td"
+                        );
+
+                    adminCell.textContent =
+                        log.admin_username ||
+                        `User ID ${log.admin_id}`;
+
+
+                    const actionCell =
+                        document.createElement(
+                            "td"
+                        );
+
+                    const badge =
+                        document.createElement(
+                            "span"
+                        );
+
+                    badge.className =
+                        "activity-badge";
+
+
+                    if (
+                        log.action ===
+                        "USER_DELETED"
+                    ) {
+
+                        badge.classList.add(
+                            "activity-delete"
+                        );
+
+                        badge.textContent =
+                            "User Deleted";
+
+                    } else if (
+                        log.action ===
+                        "ROLE_CHANGED"
+                    ) {
+
+                        badge.classList.add(
+                            "activity-role"
+                        );
+
+                        badge.textContent =
+                            "Role Changed";
+
+                    } else {
+
+                        badge.textContent =
+                            log.action;
+                    }
+
+
+                    actionCell.appendChild(
+                        badge
+                    );
+
+
+                    const targetCell =
+                        document.createElement(
+                            "td"
+                        );
+
+                    targetCell.textContent =
+                        log.target_username
+                        ||
+                        log.current_target_username
+                        ||
+                        (
+                            log.target_user_id
+                                ? `User ID ${log.target_user_id}`
+                                : "-"
+                        );
+
+
+                    const detailsCell =
+                        document.createElement(
+                            "td"
+                        );
+
+                    detailsCell.textContent =
+                        log.details || "-";
+
+
+                    const dateCell =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    if (log.created_at) {
+
+                        dateCell.textContent =
+                            new Date(
+                                log.created_at
+                            ).toLocaleString();
+
+                    } else {
+
+                        dateCell.textContent =
+                            "-";
+                    }
+
+
+                    row.append(
+                        idCell,
+                        adminCell,
+                        actionCell,
+                        targetCell,
+                        detailsCell,
+                        dateCell
+                    );
+
+
+                    activityLogsTable.appendChild(
+                        row
+                    );
+                }
+            );
+
+
+            updateActivityPagination();
+        }
+
+
+        // ========================================
+        // UPDATE ACTIVITY PAGINATION
+        // ========================================
+
+        function updateActivityPagination() {
+
+            const totalLogs =
+                filteredActivityLogs.length;
+
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        totalLogs /
+                        activityLogsPerPage
+                    )
+                );
+
+
+            const start =
+                totalLogs === 0
+                    ? 0
+                    : (
+                        (
+                            activityCurrentPage - 1
+                        ) *
+                        activityLogsPerPage
+                    ) + 1;
+
+
+            const end =
+                Math.min(
+                    activityCurrentPage *
+                    activityLogsPerPage,
+                    totalLogs
+                );
+
+
+            activityPaginationInfo.textContent =
+                `Showing ${start}–${end} of ${totalLogs} logs`;
+
+
+            activityPageNumber.textContent =
+                `Page ${activityCurrentPage} of ${totalPages}`;
+
+
+            activityPreviousBtn.disabled =
+                activityCurrentPage <= 1;
+
+
+            activityNextBtn.disabled =
+                activityCurrentPage >= totalPages
+                ||
+                totalLogs === 0;
+        }
+
+
+        // ========================================
+        // REFRESH ACTIVITY LOGS
+        // ========================================
+
+        if (refreshLogsBtn) {
+
+            refreshLogsBtn.addEventListener(
+                "click",
+                loadActivityLogs
+            );
+        }
+
+        // ========================================
+        // REFRESH
+        // ========================================
+
+        refreshUsersBtn.addEventListener(
+            "click",
+            loadUsers
+        );
+
+
+        // ========================================
+        // LOGOUT
+        // ========================================
+
+        adminLogoutBtn.addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/logout",
+                            {
+                                method:
+                                    "POST"
+                            }
+                        );
+
+
+                    if (
+                        response.ok
+                    ) {
+
+                        window.location.href =
+                            "/";
+
+                        return;
+                    }
+
+
+                    const data =
+                        await response.json();
+
+
+                    alert(
+                        data.message ||
+                        "Logout failed."
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Admin logout error:",
+                        error
+                    );
+
+
+                    alert(
+                        "Could not logout."
+                    );
+                }
+            }
+        );
+
+        // ========================================
+        // MODAL CONTROLS
+        // ========================================
+
+        closeUserModal.addEventListener(
+            "click",
+            hideUserModal
+        );
+
+
+        modalDoneBtn.addEventListener(
+            "click",
+            hideUserModal
+        );
+
+
+        userModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    userModal
+                ) {
+
+                    hideUserModal();
+                }
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape" &&
+                    !userModal.hidden
+                ) {
+
+                    hideUserModal();
+                }
+            }
+        );
+
+        // ========================================
+        // SEARCH AND FILTER EVENTS
+        // ========================================
+
+        if (userSearch) {
+
+            userSearch.addEventListener(
+                "input",
+                applyFilters
+            );
+        }
+
+
+        if (userFilter) {
+
+            userFilter.addEventListener(
+                "change",
+                applyFilters
+            );
+        }
+
+        // ========================================
+        // ACTIVITY FILTER EVENT
+        // ========================================
+
+        if (activityFilter) {
+
+            activityFilter.addEventListener(
+                "change",
+                applyActivityFilter
+            );
+        }
+
+
+        // ========================================
+        // ACTIVITY PAGINATION BUTTONS
+        // ========================================
+
+        activityPreviousBtn.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    activityCurrentPage > 1
+                ) {
+
+                    activityCurrentPage--;
+
+                    displayActivityLogs();
+                }
+            }
+        );
+
+
+        activityNextBtn.addEventListener(
+            "click",
+            () => {
+
+                const totalPages =
+                    Math.ceil(
+                        filteredActivityLogs.length /
+                        activityLogsPerPage
+                    );
+
+
+                if (
+                    activityCurrentPage <
+                    totalPages
+                ) {
+
+                    activityCurrentPage++;
+
+                    displayActivityLogs();
+                }
+            }
+        );
+
+        // ========================================
+        // START
+        // ========================================
+
+        loadUsers();
+
+        loadActivityLogs();
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Dashboard</title>
+
+    <link rel="stylesheet" href="/system.css">
+    <script src="/dashboard.js" defer></script>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">
+                    A
+                </div>
+
+                <div>
+                    <h2>Account</h2>
+                    <span>Management</span>
+                </div>
+            </div>
+
+            <button type="button" id="menuToggle" class="menu-toggle" aria-label="Toggle menu">
+                ☰
+            </button>
+
+            <nav class="sidebar-nav">
+
+                <a href="/dashboard" class="nav-link active">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+
+                <a href="#profile" class="nav-link">
+                    <span>👤</span>
+                    Profile
+                </a>
+
+                <a href="#security" class="nav-link">
+                    <span>🔒</span>
+                    Security
+                </a>
+
+
+                <a href="/admin" id="adminDashboardBtn" class="nav-link admin-link" hidden>
+                    <span>⚙</span>
+                    Admin Dashboard
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <button type="button" id="logoutBtn" class="logout-btn">
+                    ↪ Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
+
+        <main class="main-content">
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+                    <p class="page-label">
+                        ACCOUNT CENTER
+                    </p>
+
+                    <h1 id="welcome">
+                        Welcome!
+                    </h1>
+                </div>
+
+
+                <div class="user-avatar" id="topAvatar">
+                    JD
+                </div>
+
+            </header>
+
+
+            <!-- =========================
+                 PROFILE SUMMARY
+            ========================== -->
+
+            <section class="profile-banner" id="profile">
+
+                <div class="profile-avatar" id="profileAvatar">
+                    JD
+                </div>
+
+                <div class="profile-main">
+
+                    <p class="profile-label">
+                        USER PROFILE
+                    </p>
+
+                    <h2 id="username">
+                        Username
+                    </h2>
+
+                    <p id="email">
+                        user@email.com
+                    </p>
+
+                </div>
+
+
+                <div class="account-status">
+
+                    <span class="status-dot">
+                    </span>
+
+                    Active Account
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 ACCOUNT INFORMATION
+            ========================== -->
+
+            <section class="info-grid">
+
+                <article class="info-card">
+
+                    <div class="info-icon">
+                        👤
+                    </div>
+
+                    <div>
+                        <span>
+                            Username
+                        </span>
+
+                        <strong id="usernameDisplay">
+                            -
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <article class="info-card">
+
+                    <div class="info-icon">
+                        ✉
+                    </div>
+
+                    <div>
+                        <span>
+                            Email
+                        </span>
+
+                        <strong id="emailDisplay">
+                            -
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <article class="info-card">
+
+                    <div class="info-icon">
+                        📅
+                    </div>
+
+                    <div>
+                        <span>
+                            Member Since
+                        </span>
+
+                        <strong id="createdAt">
+                            -
+                        </strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =========================
+                 TWO COLUMN AREA
+            ========================== -->
+
+            <section class="content-grid">
+
+                <!-- EDIT PROFILE -->
+
+                <article class="panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <span class="section-label">
+                                PROFILE
+                            </span>
+
+                            <h2>
+                                Edit Profile
+                            </h2>
+                        </div>
+
+                        <div class="panel-icon">
+                            ✎
+                        </div>
+
+                    </div>
+
+
+                    <form id="editProfileForm">
+
+                        <div class="form-group">
+
+                            <label for="editUsername">
+                                Username
+                            </label>
+
+                            <input type="text" id="editUsername" required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="editEmail">
+                                Email Address
+                            </label>
+
+                            <input type="email" id="editEmail" required>
+
+                        </div>
+
+
+                        <button type="submit" class="primary-btn">
+                            Save Changes
+                        </button>
+
+
+                        <p id="editMessage" class="form-message"></p>
+
+                    </form>
+
+                </article>
+
+
+                <!-- CHANGE PASSWORD -->
+
+                <article class="panel" id="security">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <span class="section-label">
+                                SECURITY
+                            </span>
+
+                            <h2>
+                                Change Password
+                            </h2>
+                        </div>
+
+                        <div class="panel-icon">
+                            🔒
+                        </div>
+
+                    </div>
+
+
+                    <form id="changePasswordForm">
+
+                        <div class="form-group">
+
+                            <label for="currentPassword">
+                                Current Password
+                            </label>
+
+                            <div class="password-field">
+
+                                <input type="password" id="currentPassword" required>
+
+                                <button type="button" class="password-toggle" data-target="currentPassword"
+                                    aria-label="Show password">
+                                    👁
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="newPassword">
+                                New Password
+                            </label>
+
+                            <input type="password" id="newPassword" required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="confirmPassword">
+                                Confirm New Password
+                            </label>
+
+                            <input type="password" id="confirmPassword" required>
+
+                        </div>
+
+
+                        <button type="submit" class="primary-btn">
+                            Update Password
+                        </button>
+
+
+                        <p id="passwordMessage" class="form-message"></p>
+
+                    </form>
+
+                </article>
+
+            </section>
+
+
+            <!-- =========================
+                 DANGER ZONE
+            ========================== -->
+
+            <section class="danger-panel">
+
+                <div class="danger-content">
+
+                    <div class="danger-icon">
+                        !
+                    </div>
+
+                    <div>
+                        <span class="danger-label">
+                            DANGER ZONE
+                        </span>
+
+                        <h2>
+                            Delete Account
+                        </h2>
+
+                        <p>
+                            Permanently delete your account
+                            and all associated information.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <form id="deleteAccountForm">
+
+                    <input type="password" id="deletePassword" placeholder="Enter password to confirm" required>
+
+                    <button type="submit" class="delete-btn">
+                        Delete Account
+                    </button>
+
+                </form>
+
+
+                <p id="deleteMessage" class="form-message"></p>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- KEEP YOUR EXISTING DASHBOARD JAVASCRIPT HERE -->
+
+</body>
+
+</html>
