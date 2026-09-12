@@ -909,9 +909,16 @@ app.post("/api/login", async (req, res) => {
             });
         }
 
+        console.log(
+            "LOGIN USER ROLE FROM DATABASE:",
+            user.role
+        );
+
         req.session.user = {
             id: user.id,
-            username: user.username
+            username: user.username,
+            email: user.email,
+            role: user.role || "user"
         };
 
         req.session.save((error) => {
