@@ -847,7 +847,7 @@ app.post("/api/login", async (req, res) => {
     try {
         const [results] = await db.execute(
             `
-            SELECT id, username, email, password, is_verified
+            SELECT id, username, email, password, is_verified, role
             FROM users
             WHERE username = ?
             LIMIT 1
